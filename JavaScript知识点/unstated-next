@@ -1,0 +1,4 @@
+用途：结合 hooks 对于 React 进行状态管理，提供 createContainer 将自定义 Hooks 封装为一个数据对象，提供 Provider 
+注入与 useContainer 获取 store 这两种方法。
+
+https://segmentfault.com/a/1190000021102415

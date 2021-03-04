@@ -1,0 +1,62 @@
+Class:
+(1) React.Component：创建一个 class 组件
+
+(2) React.FC：TypeScript 使用的一个泛型，FC就是 FunctionComponent 的缩写，其实就是 hooks
+
+(3) React.createRef()：创建一个 ref
+
+(4) React.createClass（）：创建一个组件类，与 Component 有几点不同
+具体在：https://www.cnblogs.com/jhonyoung/p/8890872.html
+
+(5) React.PureComponent：不用重写 shouldComponentUpdate()
+
+(6) React.forwardRef：会创建一个 React 组件，这个组件能够将其接受的 ref 
+属性转发到其组件树下的另一个组件中。通常会用在转发 refs 到 DOM 组件或者
+在高阶组件中转发 refs。
+
+(7) React.createContext：创建一个 context 对象的组件，其实就是上下文的容器组件，
+这个组件会从组件树中离自身最近的那个匹配的 Provider 中读取到当前的 context 值，
+消费者 Consumer 需要嵌套在 Provider 的下面
+Consumer 单独使用的时候就只能消费到上下文提到的 defaultValue
+写法：<MyContext.Provider value={/* 某个值 */}>
+这样应用：
+①上下文使用：
+export const HomepageContainerContext = React.createContext({
+  scrollPaneRef: {
+    scrollTop: 0,
+  },
+})
+
+this.context.scrollPaneRef;
+
+
+②父子传值使用：
+<HomepageContainerContext.Provider value={{ scrollPaneRef: this.scrollPane }}>
+    <Content {...this.props} />
+</HomepageContainerContext.Provider>
+
+this.props.scrollPaneRef 去使用
+
+(8) React.memo: 如果你的组件在相同的 props 的情况下渲染相同的结果，那么你可以通过将其包装在
+React.memo 中调用，以此通过记忆组件渲染结果的方式来提高组件的性能表现。这意味着 React 跳过渲
+染的过程直接复用最近一次渲染的结果。
+
+Hooks:
+(1)useState
+
+①React 会确保 setState 函数的标识是稳定的，并且不会在组件重新渲染时发生变化。这就是
+为什么可以安全地从 useEffect 和 usecallback 的依赖列表中省略 setState。
+②与 class 的 setState 方法不同，useState 不会自动合并更新对象。可以使用函数式的 setState 结合扩展运算符来达到效果。
+
+(2)useRef
+(3)useEffect
+(4)useLayoutEffect
+(5)useReducer
+(6)useContext
+
+
+其它：HTMLDivElement 这是一个 DOMString 表示一个指示元素内容对于周围的
+对齐方式的可枚举属性。
+
+可以这样写：const ref = useRef<HTMLDivElement>();
+

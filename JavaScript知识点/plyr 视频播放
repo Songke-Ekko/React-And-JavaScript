@@ -1,0 +1,22 @@
+1.loadedmetadata 可以直接监听，事件为视频的元数据已经加载：
+event.on("loadedmetadata")
+
+this._fullscreenPlyr = plyr.setup(document.querySelector(`#${this._fullscreenVideoElementId}`), {
+    autoplay: true,
+});
+
+// 加载完再做操作，防止闪现
+this._fullscreenPlyr.on("loadedmetadata", () => {})
+
+2.volumechange 音量发生变化
+
+3.plyr npm
+
+4.当音频/视频处于加载过程中时，会依次发生以下事件；
+(1)loadstart 
+(2)durtionchange
+(3)loadedmetadata
+(4)loadeddata
+(5)progress
+(6)canplay
+(7)canplaythrough

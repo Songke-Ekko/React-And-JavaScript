@@ -1,0 +1,27 @@
+测量 DOM 节点，比如触发滚动事件，获取 DOM 节点的位置或是大小的基本方式是使用
+callback ref，每当 ref 被附加到另一个节点，React 就会调用 callback。
+
+下面的案例中没有使用 useRef,因为当 ref 是一个对象时它并不会把当前 ref 的值
+的变化通知到我们。使用 callback ref 可以确保即便子组件延迟显示被测量的节点（
+比如为了响应一次点击），我们依然能够在父组件接收到相关的信息，以便更新测量结果。
+
+我们传递了 [] 作为 useCllback 的依赖列表，这确保了 ref callback 不会在
+再次渲染时改变，因此 React 不会在非必要的时候调用它。
+
+const WorkSpaceContainer = React.FC<{
+    affair: any,
+    history: any,
+}> = ({ affair, history}) = > {
+    const [containerRef, setContainerRef] = useState();
+    const getContainerRef = useCallBack((ref) => {
+        if(ref !== null) {
+            setContainerRef(ref);
+        }
+    }, [])
+    
+    return (
+        <div ref={getContainerRef}>
+
+        </div>
+    )
+}

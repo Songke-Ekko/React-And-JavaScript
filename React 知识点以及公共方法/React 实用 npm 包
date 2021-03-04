@@ -1,0 +1,30 @@
+① react-loadable: 用于加载具有动态组件导入的高阶组件
+
+用法：import Loadable from 'react-loadable'
+
+const WorkspaceContainer = Loadable({
+    loader: () => import('./containers/WorkspaceContainer'),
+    loading: () => null,
+})
+
+② react-router: 核心路由功能，获取浏览器 url 
+
+用法： import { hashHistory } from 'react-router'
+import { routerMiddleware } from 'react-router-redux'
+
+let middlewares = []
+middlewares.push(routerMiddleware(hashHistory))
+您可以将中间件应用于Redux，store以捕获由动作创建者创建的调度动作。
+它将那些动作重定向到提供的history实例。
+
+③ react-measure: 计算React组件的度量。用于 ResizeObserver 检测元素的尺寸何时发生变化。
+包括用于ResizeObserver 不受支持的浏览器的 polyfill。
+
+polyfill: 解决浏览器的兼容性
+
+④ react-virtualized：React组件可有效地呈现大型列表和表格数据
+（1）List (2) AutoSizer (3) CellMeasurer (4) InifiniteLoader
+
+⑤ react-amap：React 对接的谷歌地图
+
+⑥ qrcode.react: React 实现的二维码

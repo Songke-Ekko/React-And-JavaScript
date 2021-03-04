@@ -1,0 +1,7 @@
+underscore npm 库
+import _ from 'underscore'
+this.scrollHandler = _.debounce(this.handleScroll, 100)
+this.scrollHandler = _.throttle(this.handleScroll, 100)
+
+防抖：debounce 经典场景就是输入框的实时搜索，要保证用户在输入完成之后出发搜索，而不是每一个字母就触发一次, 还有就是 resize 重新计算 window 样式或者布局的时候会用到。
+节流：throttle 经典场景就是滚动的时候要用到，因为几毫秒内发生的事件其实是没有什么区别的，所以要做节流，保证一定时间之内，只触发一次。

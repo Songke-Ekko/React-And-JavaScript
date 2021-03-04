@@ -1,0 +1,33 @@
+元素为 动态高度 时，需要用这个来包裹，以确保高度重新计算正确
+
+ResizeObserver避免了通过回调函数调整大小时经常创建的无限回调循环和循环依赖关系。它仅通过在后续帧中处理DOM中更深的元素来做到这一点。如果实现遵循规范，则它们应该在绘制之前和布局之后调用resize事件
+
+当我们需要知道一个元素的大小变化或者屏幕横竖屏时，我们需要监听window.resize事件或者window.orientationchange方法。由于reize事件会在一秒内触发将近60次，所以很容易在改变窗口大小时导致性能问题。
+
+换句话说，window.resize事件通常是浪费的，因为它会监听每个元素的大小变化（只有window对象才有resize事件），而不是具体到某个元素的变化。如果我们只想监听某个元素的变化的话，这种操作就很浪费性能了。
+
+而ResizeObserver API就可以帮助我们：监听一个DOM节点的变化，这种变化包括但不仅限于：
+
+（1）某个节点的出现和隐藏
+（2）某个节点的大小变化
+
+ResizeObserver API是一个新的JavaScript API，与IntersectionObserver API非常相似，它们都允许我们去监听某个元素的变化。
+
+export const LoadMoreItemResizeWrapper = (props: React.PropsWithChildren<{ measure: () => void }>) => {
+  const ref = useRef<HTMLDivElement>();
+  useLayoutEffect(() => {
+    // 已加polyfill
+    const observer = new ResizeObserver(() => {
+      props.measure();
+    });
+    observer.observe(ref.current);
+    return () => {
+      observer.disconnect();
+    }
+  }, []);
+  return (
+    <div ref={ref}>
+      {props.children}
+    </div>
+  );
+}

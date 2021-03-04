@@ -1,0 +1,32 @@
+部署步骤
+前端项目的输出由 jenkins 平台进行打包。除线上环境需要部署管理人员协助发版以外，其他环境打包成功后会进行立即更新。
+jenkins 的配置需要部署管理人员协助。
+
+当前 jenkins 部署流程包括：
+根据 jenkins 环境的不同，通过 git 强制同步部署环境文件为 remote 对应分支的 HEAD。
+在 superid-web 中运行 e.g. bash ./deploy.sh 100
+
+deploy.sh 的内容
+#1 - #18: 确定 SERVER_TAG (影响运行时连接的服务器)与输出打包版本信息。
+#20 - #22: build docker image, 具体内容见下文。
+#24 - #29: 检查是否打包完成，若失败则进行退出。否则会导致打包一直处于进行中的状态，无法开启报警。
+#31 - #45：将打包好的 image 推送到镜像库，并启动 docker container。
+
+Build docker image
+部署环境运行的 image 由 superid-web 中的 Dockerfile 决定：
+
+#1 - #6: 确定 node 版本并安装 cnpm，并完成环境变量的初始化。
+#10 - #37：复制服务器中的文件至 container 中，并进行 cnpm install 安装相关依赖。
+#39 - #41：运行 npm run build 进行打包获得输出文件。
+#43 - #46：运行 npm run server 启动 HTTP 服务器将打包好的资源文件在指定端口进行 serve。HTTP 服务器详细内容见下文。
+注：
+有时 cnpm install 会由于阿里云服务器不稳定产生错误，重新打包即可。
+ENV VERSION=$VERSION 的位置需要处于 Dockerfile 的末尾，否则会引起 layer 的变动而导致无法使用 cnpm install 的 cache layer。
+
+HTTP 服务器
+HTTP 服务器的详细定义由 superid-web 中的 server.js 决定，除了通用的资源服务器的内容外，需要注意的内容有：
+#16 - #20: 为了使打包出的 docker image 启动时能够决定连接后端服务器，采用环境变量替换的方式影响浏览器运行时的环境变量的方案。
+#22 - #43: CDN 地址的替换。
+#54 - #66: 由于前端项目使用了 hash route，为了支持用户直接输入路由，服务器会自动将路由转化为 hash route。并对下面路由进行特殊处理：
+/?code= 为微信跳转 callback 页，不能进行重定向。
+/der/t 开头的路由访问由后端短链重定向产生，需要进行特殊逻辑的 hash route 转化。
