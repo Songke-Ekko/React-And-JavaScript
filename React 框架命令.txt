@@ -1,0 +1,22 @@
+①：原生的 React 框架：
+1.npm i -g create-react-app
+2.create-react-app myProject
+
+②：webpack + React 框架：
+1.npm init -y
+2.npm i webpack webpack-cli webpack-command --save-dev 或者指定 webpack 版本 npm install --save-dev webpack@[version]
+3.npm i html-webpack-plugin --save-dev (自动创建 html 文件)
+4.npm i clean-webpack-plugin --save-dev (自动清除无用文件)
+5.npm i style-loader css-loader node-sass sass-loader file-loader url-loader --save-dev (node-sass sass-loader 编译 scss 文件，style-loader css-loader 编译 css 文件)
+6.npm i webpack-dev-server --save-dev (webpack 服务器)
+7.npm run build
+8.npm i react react-dom antd --save
+9.npm run build 
+10. npm run dev
+注意：如果有报错 DeprecationWarning: Tapable.plugin is deprecated. Use new API on `.hooks` instead,则 npm install extract-text-webpack-plugin@next 即可。
+
+③：umi + dva + react
+1.yarn create @umijs/umi-app
+2.yarn
+3.yarn start
+4.umi build
